@@ -20,7 +20,14 @@ package body instruction is
    
    procedure Handler_0 (Cpu : Chip8; Op : Opcode) is
    begin
-      null;
+      case Op is
+         when 16#00E0# =>
+            null;
+         when 16#00EE# =>
+            null;
+         when others =>
+            null;
+      end case;
    end Handler_0;
    
    procedure Handler_1 (Cpu : Chip8; Op : Opcode) is
@@ -60,7 +67,29 @@ package body instruction is
    
    procedure Handler_8 (Cpu : Chip8; Op : Opcode) is
    begin
-      null;
+      case Op mod 16 is
+         when 0 =>
+            null;
+         when 1 =>
+            null;
+         when 2 =>
+            null;
+         when 3 =>
+            null;
+         when 4 =>
+            null;
+         when 5 =>
+            null;
+         when 6 =>
+            null;
+         when 7 =>
+            null;
+         when 16#E# =>
+            null;
+         when others =>
+            -- error
+            null;
+      end case;
    end Handler_8;
    
    procedure Handler_9 (Cpu : Chip8; Op : Opcode) is
@@ -90,12 +119,42 @@ package body instruction is
    
    procedure Handler_E (Cpu : Chip8; Op : Opcode) is
    begin
-      null;
+      case Op mod 256 is
+         when 16#9E# =>
+            null;
+         when 16#A1# =>
+            null;
+         when others =>
+            -- error
+            null;
+      end case;
    end Handler_E;
    
    procedure Handler_F (Cpu : Chip8; Op : Opcode) is
    begin
-      null;
+      case Op mod 256 is
+         when 16#07# =>
+            null;
+         when 16#0A# =>
+            null;
+         when 16#15# =>
+            null;
+         when 16#18# =>
+            null;
+         when 16#1E# =>
+            null;
+         when 16#29# =>
+            null;
+         when 16#33# =>
+            null;
+         when 16#55# =>
+            null;
+         when 16#65# =>
+            null;
+         when others =>
+            -- error
+            null;
+      end case;
    end Handler_F;
    
 end instruction;
