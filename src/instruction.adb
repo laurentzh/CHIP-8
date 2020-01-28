@@ -1,6 +1,6 @@
 with Interfaces; use Interfaces;
 
-package body instruction is
+package body Instruction is
 
    function Fetch (Mem : Memory; Addr : Address) return Opcode is
       Op : Opcode;
@@ -194,4 +194,4 @@ package body instruction is
       end case;
    end Handler_F;
    
-end instruction;
+end Instruction;

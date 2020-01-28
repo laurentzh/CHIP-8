@@ -1,7 +1,7 @@
 with Types; use Types;
 with Cpu; use Cpu;
 
-package instruction is
+package Instruction is
    
    subtype Opcode is Word;
    
@@ -45,4 +45,4 @@ package instruction is
                                                      Handler_E'Access,
                                                      Handler_F'Access);
    
-end instruction;
+end Instruction;

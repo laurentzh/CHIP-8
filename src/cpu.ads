@@ -1,22 +1,22 @@
+with Stack; use Stack;
 with Types; use Types;
 
 package Cpu is
    type Chip8 is record
       
       Mem : Memory;
-      --Regs : Registers;
+      Regs : Registers;
    
       I : Address;
-      PC: Address;
+      PC : Address;
       
-      --Stack : Stack;
-      Stack_Pointer : Address;
+      Stack : Stack_Record;
    
       Delay_Timer : Byte;
       Sound_Timer : Byte;
    
-      --Screen : Pixels_Array;
-      --Keys : Keys_List;
+      Screen : Display;
+      Keys : Keys_List;
 
    end record;
 end Cpu;
