@@ -32,8 +32,7 @@ package body Instruction is
          when 16#00EE# =>
             Cpu.PC := Pop_Stack(Cpu.Stack);
          when others =>
-            -- call RCA 1802 program
-            null;
+            Cpu.PC := N;
       end case;
    end Handler_0;
 
@@ -157,6 +156,7 @@ package body Instruction is
       N : constant Address := Op mod 16#1000#;
    begin
       Cpu.I := N;
+      Cpu.PC := Cpu.PC + 2;
    end Handler_A;
    
    procedure Handler_B (Cpu : in out Chip8; Op : Opcode) is
@@ -175,6 +175,7 @@ package body Instruction is
    begin
       Reset(G);
       Cpu.Regs(X) := Random(G) and N;
+      Cpu.PC := Cpu.PC + 2;
    end Handler_C;
    
    procedure Handler_D (Cpu : in out Chip8; Op : Opcode) is
@@ -222,7 +223,6 @@ package body Instruction is
             -- error
             null;
       end case;
-      
       Cpu.PC := Cpu.PC + 2;
    end Handler_E;
    
@@ -261,6 +261,7 @@ package body Instruction is
             -- error
             null;
       end case;
+      Cpu.PC := Cpu.PC + 2;
    end Handler_F;
    
 end Instruction;
