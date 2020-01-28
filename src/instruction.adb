@@ -270,8 +270,9 @@ package body Instruction is
             -- sprite
             null;
          when 16#33# =>
-            -- bcd
-            null;
+            Cpu.Mem(Cpu.I) := Cpu.Regs(X) / 100;
+            Cpu.Mem(Cpu.I + 1) := Cpu.Regs(X) / 10 mod 10;
+            Cpu.Mem(Cpu.I + 2) := Cpu.Regs(X) mod 10;
          when 16#55# =>
             for I in Regs loop
                Cpu.Mem(Cpu.I + Word(I)) := Cpu.Regs(I);
