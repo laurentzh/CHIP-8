@@ -203,10 +203,12 @@ package body Instruction is
                   end if;
                   Cpu.Screen(Pos_Y, Pos_X) := Tmp xor True;
                end;
+               Gfx.Draw_Pixel(Pos_X, Pos_Y, Cpu.Screen(Pos_Y, Pos_X));
             end if;
          end loop;
       end loop;
       Cpu.PC := Cpu.PC + 2;
+      Display.Update_Layer(1, True);
    end Handler_D;
    
    procedure Handler_E (Cpu : in out Chip8; Op : Opcode) is
