@@ -22,19 +22,20 @@ package body Instruction is
    procedure Handler_0 (Cpu : in out Chip8; Op : Opcode) is
       N : Address;
    begin
+      N := Op mod 16#1000#;
+      
       case Op is
          when 16#00E0# =>
             -- clear the screen
             null;
          when 16#00EE# =>
-            -- return from subroutine
             Cpu.PC := Pop_Stack(Cpu.Stack);
          when others =>
-            N := Op mod 16#1000#;
+            -- call RCA 1802 program
             null;
       end case;
    end Handler_0;
-   
+
    procedure Handler_1 (Cpu : in out Chip8; Op : Opcode) is
       N : Address;
    begin
@@ -53,13 +54,13 @@ package body Instruction is
    end Handler_2;
 
    procedure Handler_3 (Cpu : in out Chip8; Op : Opcode) is
-      X : Byte;
-      N : Integer;
+      X : Integer;
+      N : Byte;
    begin
-      X := Byte(Op and 16#F00#);
-      N := Integer(Op mod 16#100#);
+      X := Integer(Op and 16#F00#);
+      N := Byte(Op mod 16#100#);
       
-      if Cpu.Regs(N) = X then
+      if Cpu.Regs(X) = N then
          Cpu.PC := Cpu.PC + 2;
       end if;
       
@@ -67,13 +68,13 @@ package body Instruction is
    end Handler_3;
    
    procedure Handler_4 (Cpu : in out Chip8; Op : Opcode) is
-      X : Byte;
-      N : Integer;
+      X : Integer;
+      N : Byte;
    begin
-      X := Byte(Op and 16#F00#);
-      N := Integer(Op mod 16#100#);
+      X := Integer(Op and 16#F00#);
+      N := Byte(Op mod 16#100#);
       
-      if Cpu.Regs(N) /= X then
+      if Cpu.Regs(X) /= N then
          Cpu.PC := Cpu.PC + 2;
       end if;
       
