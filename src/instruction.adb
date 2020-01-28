@@ -228,6 +228,7 @@ package body Instruction is
    
    procedure Handler_F (Cpu : in out Chip8; Op : Opcode) is
       subtype Regs is Integer range 0 .. 15;
+      subtype Keys is Integer range 0 .. 15;
       
       X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
    begin
@@ -235,8 +236,13 @@ package body Instruction is
          when 16#07# =>
             Cpu.Regs(X) := Cpu.Delay_Timer;
          when 16#0A# =>
-            -- key
-            null;
+            for I in Keys loop
+               if Cpu.Keys(I) then
+                  Cpu.Regs(X) := Byte(I);
+                  Cpu.PC := Cpu.PC + 2;
+                  return;
+               end if;
+            end loop;
          when 16#15# =>
             Cpu.Delay_Timer := Cpu.Regs(X);
          when 16#18# =>
