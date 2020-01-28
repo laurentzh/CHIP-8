@@ -5,7 +5,7 @@ package Types is
    subtype Byte is Unsigned_8;
    subtype Word is Unsigned_16;
 
-   subtype Address is Integer range 0 .. 4095;
+   subtype Address is Word range 0 .. 4095;
    type Memory is array (Address) of Byte;
    type Registers is array (0 .. 15) of Byte;
    -- Width: 64 -- Height: 32

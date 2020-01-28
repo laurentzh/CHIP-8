@@ -1,6 +1,6 @@
 package body Stack is
 
-   procedure Push_Stack(Stack : in out Stack_Record, Element : Byte) is
+   procedure Push_Stack(Stack : in out Stack_Record; Element : Address) is
    begin
       Stack.Arr(Stack.Size) := Element;
       Stack.Size := Stack.Size + 1;
