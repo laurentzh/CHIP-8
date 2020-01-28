@@ -26,4 +26,6 @@ package Stack is
      with Pre => Stack.Size > 0,
      Post => Peek_Stack'Result = Stack.Arr(Stack.Size - 1);
    
+   function Init_Stack return Stack_Record;
+   
 end Stack;

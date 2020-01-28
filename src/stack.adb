@@ -16,5 +16,12 @@ package body Stack is
    begin
       return Stack.Arr(Stack.Size - 1);
    end Peek_Stack;
+   
+   function Init_Stack return Stack_Record is
+      Stack : Stack_Record;
+   begin
+      Stack.Size := 0;
+      return Stack;
+   end;
 
 end Stack;
