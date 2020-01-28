@@ -22,10 +22,8 @@ package body Instruction is
    end Execute;
    
    procedure Handler_0 (Cpu : in out Chip8; Op : Opcode) is
-      N : Address;
+      N : constant Address := Op mod 16#1000#;
    begin
-      N := Op mod 16#1000#;
-      
       case Op is
          when 16#00E0# =>
             -- clear the screen
@@ -39,93 +37,68 @@ package body Instruction is
    end Handler_0;
 
    procedure Handler_1 (Cpu : in out Chip8; Op : Opcode) is
-      N : Address;
+      N : constant Address := Op mod 16#1000#;
    begin
-      N := Op mod 16#1000#;
-      
       Cpu.PC := N;
    end Handler_1;
    
    procedure Handler_2 (Cpu : in out Chip8; Op : Opcode) is
-      N : Address;
+      N : constant Address := Op mod 16#1000#;
    begin
-      N := Op mod 16#1000#;
-      
       Push_Stack(Cpu.Stack, Cpu.PC);
       Cpu.PC := N;
    end Handler_2;
 
    procedure Handler_3 (Cpu : in out Chip8; Op : Opcode) is
-      X : Integer;
-      N : Byte;
+      X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
+      N : constant Byte := Byte(Op mod 16#100#);
    begin
-      X := Integer(Op and 16#F00#);
-      N := Byte(Op mod 16#100#);
-      
       if Cpu.Regs(X) = N then
          Cpu.PC := Cpu.PC + 2;
       end if;
-      
       Cpu.PC := Cpu.PC + 2;
    end Handler_3;
    
    procedure Handler_4 (Cpu : in out Chip8; Op : Opcode) is
-      X : Integer;
-      N : Byte;
+      X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
+      N : constant Byte := Byte(Op mod 16#100#);
    begin
-      X := Integer(Op and 16#F00#);
-      N := Byte(Op mod 16#100#);
-      
       if Cpu.Regs(X) /= N then
          Cpu.PC := Cpu.PC + 2;
       end if;
-      
       Cpu.PC := Cpu.PC + 2;
    end Handler_4;
    
    procedure Handler_5 (Cpu : in out Chip8; Op : Opcode) is
-      X : Integer;
-      Y : Integer;
+      X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
+      Y : constant Integer := Integer(Shift_Right(Op, 4) and 16#F#);
    begin
-      X := Integer(Op and 16#F00#);
-      Y := Integer(Op and 16#F0#);
-      
       if Cpu.Regs(X) = Cpu.Regs(Y) then
          Cpu.PC := Cpu.PC + 2;
       end if;
-      
       Cpu.PC := Cpu.PC + 2;
    end Handler_5;
    
    procedure Handler_6 (Cpu : in out Chip8; Op : Opcode) is
-      X : Integer;
-      N : Byte;
+      X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
+      N : constant Byte := Byte(Op mod 16#100#);
    begin
-      X := Integer(Op and 16#F00#);
-      N := Byte(Op mod 16#100#);
-      
       Cpu.Regs(X) := N;
       Cpu.PC := Cpu.PC + 2;
    end Handler_6;
    
    procedure Handler_7 (Cpu : in out Chip8; Op : Opcode) is
-      X : Integer;
-      N : Byte;
+      X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
+      N : constant Byte := Byte(Op mod 16#100#);
    begin
-      X := Integer(Op and 16#F00#);
-      N := Byte(Op mod 16#100#);
-      
       Cpu.Regs(X) := Cpu.Regs(X) + N;
       Cpu.PC := Cpu.PC + 2;
    end Handler_7;
    
    procedure Handler_8 (Cpu : in out Chip8; Op : Opcode) is
-      X : Integer;
-      Y : Integer;
+      X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
+      Y : constant Integer := Integer(Shift_Right(Op, 4) and 16#F#);
    begin
-      X := Integer(Op and 16#F00#);
-      Y := Integer(Op and 16#F0#);
-      
       case Op mod 16#10# is
          when 0 =>
             Cpu.Regs(X) := Cpu.Regs(Y);
@@ -166,35 +139,28 @@ package body Instruction is
             -- error
             null;
       end case;
-      
       Cpu.PC := Cpu.PC + 2;
    end Handler_8;
    
    procedure Handler_9 (Cpu : in out Chip8; Op : Opcode) is
-      X : Integer;
-      Y : Integer;
+      X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
+      Y : constant Integer := Integer(Shift_Right(Op, 4) and 16#F#);
    begin
-      X := Integer(Op and 16#F00#);
-      Y := Integer(Op and 16#F0#);
-      
       if Cpu.Regs(X) /= Cpu.Regs(Y) then
          Cpu.PC := Cpu.PC + 2;
       end if;
-      
       Cpu.PC := Cpu.PC + 2;
    end Handler_9;
    
    procedure Handler_A (Cpu : in out Chip8; Op : Opcode) is
-      N : Address;
+      N : constant Address := Op mod 16#1000#;
    begin
-      N := Op mod 16#1000#;
       Cpu.I := N;
    end Handler_A;
    
    procedure Handler_B (Cpu : in out Chip8; Op : Opcode) is
-      N : Address;
+      N : constant Address := Op mod 16#1000#;
    begin
-      N := Op mod 16#1000#;
       Cpu.PC := N + Word(Cpu.Regs(0));
    end Handler_B;
    
@@ -203,33 +169,25 @@ package body Instruction is
       use Random_Byte;
       
       G : Generator;
-      X : Integer;
-      N : Byte;
+      X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
+      N : constant Byte := Byte(Op mod 16#100#);
    begin
-      X := Integer(Op and 16#F00#);
-      N := Byte(Op mod 16#100#);
-      
       Reset(G);
       Cpu.Regs(X) := Random(G) and N;
    end Handler_C;
    
    procedure Handler_D (Cpu : in out Chip8; Op : Opcode) is
-      X : Word;
-      Y : Word;
+      X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
+      Y : constant Integer := Integer(Shift_Right(Op, 4) and 16#F#);
    begin
-      X := Op and 16#F00#;
-      Y := Op and 16#F0#;
       -- draw
       null;
    end Handler_D;
    
    procedure Handler_E (Cpu : in out Chip8; Op : Opcode) is
-      X : Integer;
-      I : Integer;
+      X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
+      I : constant Integer := Integer(Cpu.Regs(X));
    begin
-      X := Integer(Op and 16#F00#);
-      I := Integer(Cpu.Regs(X));
-      
       case Op mod 16#100# is
          when 16#9E# =>
             if Cpu.Keys(I) then
@@ -250,10 +208,8 @@ package body Instruction is
    procedure Handler_F (Cpu : in out Chip8; Op : Opcode) is
       subtype Regs is Integer range 0 .. 15;
       
-      X : Integer;
+      X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
    begin
-      X := Integer(Op and 16#F00#);
-      
       case Op mod 16#100# is
          when 16#07# =>
             Cpu.Regs(X) := Cpu.Delay_Timer;
