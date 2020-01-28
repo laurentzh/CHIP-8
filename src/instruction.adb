@@ -5,12 +5,12 @@ with Stack; use Stack;
 
 package body Instruction is
 
-   function Fetch (Mem : Memory; Addr : Address) return Opcode is
+   function Fetch (Cpu : Chip8) return Opcode is
       Op : Opcode;
    begin
-      Op := Word(Mem(Addr));
+      Op := Word(Cpu.Mem(Cpu.PC));
       Op := Shift_Left(Op, 8);
-      Op := Op + Word(Mem(Addr + 1));
+      Op := Op + Word(Cpu.Mem(Cpu.PC + 1));
       return Op;
    end Fetch;
    
@@ -223,8 +223,7 @@ package body Instruction is
          when 16#1E# =>
             Cpu.I := Cpu.I + Word(Cpu.Regs(X));
          when 16#29# =>
-            -- sprite
-            null;
+            Cpu.I := Word(Cpu.Regs(X)) * 5;
          when 16#33# =>
             Cpu.Mem(Cpu.I) := Cpu.Regs(X) / 100;
             Cpu.Mem(Cpu.I + 1) := Cpu.Regs(X) / 10 mod 10;

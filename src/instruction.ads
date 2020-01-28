@@ -5,7 +5,7 @@ package Instruction is
    
    subtype Opcode is Word;
    
-   function Fetch (Mem : Memory; Addr : Address) return Opcode;
+   function Fetch (Cpu : Chip8) return Opcode;
    procedure Execute (Cpu : in out Chip8; Op : Opcode);
    
    procedure Handler_0 (Cpu : in out Chip8; Op : Opcode);
