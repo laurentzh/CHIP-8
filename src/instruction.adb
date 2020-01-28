@@ -202,8 +202,8 @@ package body Instruction is
                      Cpu.Regs(15) := 1;
                   end if;
                   Cpu.Screen(Pos_Y, Pos_X) := Tmp xor True;
+                  Gfx.Draw_Pixel(Pos_X, Pos_Y, Cpu.Screen(Pos_Y, Pos_X));
                end;
-               Gfx.Draw_Pixel(Pos_X, Pos_Y, Cpu.Screen(Pos_Y, Pos_X));
             end if;
          end loop;
       end loop;
