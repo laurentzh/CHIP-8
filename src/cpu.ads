@@ -15,7 +15,7 @@ package Cpu is
       Delay_Timer : Byte;
       Sound_Timer : Byte;
    
-      Screen : Display;
+      Screen : Screen_Array;
       Keys : Keys_List;
 
    end record;

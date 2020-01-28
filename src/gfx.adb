@@ -15,18 +15,25 @@ package body Gfx is
       
       -- Set Background color
       LCD_Std_Out.Set_Font (BMP_Fonts.Font8x8);
-      LCD_Std_Out.Current_Background_Color := Transparent;
+      LCD_Std_Out.Current_Background_Color := Black;
       -- Apply color
       LCD_Std_Out.Clear_Screen;
    end;
 
    procedure Draw_Pixel(X : Integer; Y : Integer; Pixel : Boolean) is
-      Color : constant Bitmap_Color := (if Pixel then White else Black);
+      Color : constant Bitmap_Color := (if Pixel then White else Transparent);
       Pt : constant Point := (X, Y);
    begin
       Display.Hidden_Buffer(1).Set_Source(Color);
       Display.Hidden_Buffer(1).Set_Pixel(Pt);
-      Display.Update_Layer(1, True);
+      --Display.Update_Layer(1, True);
    end Draw_Pixel;
+   
+   procedure Clear is
+   begin
+      Display.Hidden_Buffer(1).Set_Source(Transparent);
+      Display.Hidden_Buffer(1).Fill;
+      Display.Hidden_Buffer(1).Set_Source(White);
+   end;
    
 end Gfx;

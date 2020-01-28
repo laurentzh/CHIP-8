@@ -1,8 +1,8 @@
 with Ada.Numerics.Discrete_Random;
 with Gfx;
 with Interfaces; use Interfaces;
-
 with Stack; use Stack;
+with STM32.Board; use STM32.Board;
 
 package body Instruction is
 
@@ -28,7 +28,10 @@ package body Instruction is
       case Op is
          when 16#00E0# =>
             -- clear the screen
-            null;
+            Cpu.Screen := (others => (others => False));
+            Gfx.Clear;
+            Display.Update_Layer(1, True);
+            Cpu.PC := Cpu.PC + 2;
          when 16#00EE# =>
             Cpu.PC := Pop_Stack(Cpu.Stack);
          when others =>
