@@ -1,4 +1,6 @@
+with Ada.Numerics.Discrete_Random;
 with Interfaces; use Interfaces;
+
 with Stack; use Stack;
 
 package body Instruction is
@@ -197,13 +199,18 @@ package body Instruction is
    end Handler_B;
    
    procedure Handler_C (Cpu : in out Chip8; Op : Opcode) is
-      X : Word;
-      N : Word;
+      package Random_Byte is new Ada.Numerics.Discrete_Random (Byte);
+      use Random_Byte;
+      
+      G : Generator;
+      X : Integer;
+      N : Byte;
    begin
-      X := Op and 16#F00#;
-      N := Op mod 16#100#;
-      -- random
-      null;
+      X := Integer(Op and 16#F00#);
+      N := Byte(Op mod 16#100#);
+      
+      Reset(G);
+      Cpu.Regs(X) := Random(G) and N;
    end Handler_C;
    
    procedure Handler_D (Cpu : in out Chip8; Op : Opcode) is
