@@ -1,4 +1,5 @@
 with Ada.Numerics.Discrete_Random;
+with Gfx;
 with Interfaces; use Interfaces;
 
 with Stack; use Stack;
@@ -179,9 +180,29 @@ package body Instruction is
    procedure Handler_D (Cpu : in out Chip8; Op : Opcode) is
       X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
       Y : constant Integer := Integer(Shift_Right(Op, 4) and 16#F#);
+      Height : constant Integer := Integer(Op mod 16#10#);
+      Pixel : Byte;
    begin
-      -- draw
-      null;
+      -- Reset VF
+      Cpu.Regs(15) := 0;
+      for Y_Line in 0 .. Height - 1 loop
+         Pixel := Cpu.Mem(Cpu.I + Word(Y_Line));
+         for X_Line in 0 .. 7 loop
+            if (Pixel and Shift_Right(16#80#, Y_Line)) /= 0 then
+               declare
+                  Pos_X : constant Integer := (X + X_Line) mod Gfx.Screen_Width;
+                  Pos_Y : constant Integer := (Y + Y_Line) mod Gfx.Screen_Height;
+                  Tmp : constant Boolean := Cpu.Screen(Pos_Y, Pos_X);
+               begin
+                  if Tmp then
+                     Cpu.Regs(15) := 1;
+                  end if;
+                  Cpu.Screen(Pos_Y, Pos_X) := Tmp xor True;
+               end;
+            end if;
+         end loop;
+      end loop;
+      Cpu.PC := Cpu.PC + 2;
    end Handler_D;
    
    procedure Handler_E (Cpu : in out Chip8; Op : Opcode) is
