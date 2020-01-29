@@ -245,6 +245,7 @@ package body Instruction is
                   return;
                end if;
             end loop;
+            return;
          when 16#15# =>
             Cpu.Delay_Timer := Cpu.Regs(X);
          when 16#18# =>
