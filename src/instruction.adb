@@ -31,12 +31,12 @@ package body Instruction is
             Cpu.Screen := (others => (others => False));
             Gfx.Clear;
             Display.Update_Layer(1, True);
-            Cpu.PC := Cpu.PC + 2;
          when 16#00EE# =>
             Cpu.PC := Pop_Stack(Cpu.Stack);
          when others =>
             Cpu.PC := N;
       end case;
+      Cpu.PC := Cpu.PC + 2;
    end Handler_0;
 
    procedure Handler_1 (Cpu : in out Chip8; Op : Opcode) is
@@ -261,11 +261,11 @@ package body Instruction is
             Cpu.Mem(Cpu.I + 1) := Cpu.Regs(X) / 10 mod 10;
             Cpu.Mem(Cpu.I + 2) := Cpu.Regs(X) mod 10;
          when 16#55# =>
-            for I in Cpu.Regs'Range loop
+            for I in Integer range Cpu.Regs'First .. X loop
                Cpu.Mem(Cpu.I + Word(I)) := Cpu.Regs(I);
             end loop;
          when 16#65# =>
-            for I in Cpu.Regs'Range loop
+            for I in Integer range Cpu.Regs'First .. X loop
                Cpu.Regs(I) := Cpu.Mem(Cpu.I + Word(I));
             end loop;
          when others =>
