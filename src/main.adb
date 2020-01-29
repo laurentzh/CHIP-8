@@ -2,6 +2,7 @@ with Cpu; use Cpu;
 with Instruction; use Instruction;
 with Roms; use Roms;
 with Types; use Types;
+with Inputs; use Inputs;
 with Gfx;
 
 procedure Main is
@@ -20,5 +21,6 @@ begin
    loop
       Op := Fetch(Global_Cpu);
       Execute(Global_Cpu, Op);
+      Update_Pressed_Keys(Global_Cpu.Keys);
    end loop;
 end Main;
