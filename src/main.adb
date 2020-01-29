@@ -22,11 +22,11 @@ begin
    Gfx.Clear_Layer(1);
    Gfx.Clear_Layer(2);
 
-   Gfx.Draw_Keyboard;
+   Gfx.Draw_Keyboard(Global_Cpu.Mem);
    Load_Rom(Global_Cpu, IBM);
    loop
       Op := Fetch(Global_Cpu);
       Execute(Global_Cpu, Op);
-      Update_Pressed_Keys(Global_Cpu.Keys);
+      --Update_Pressed_Keys(Global_Cpu.Keys);
    end loop;
 end Main;
