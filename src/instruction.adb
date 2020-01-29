@@ -232,16 +232,13 @@ package body Instruction is
    end Handler_E;
    
    procedure Handler_F (Cpu : in out Chip8; Op : Opcode) is
-      subtype Regs is Integer range 0 .. 15;
-      subtype Keys is Integer range 0 .. 15;
-      
       X : constant Integer := Integer(Shift_Right(Op, 8) and 16#F#);
    begin
       case Op mod 16#100# is
          when 16#07# =>
             Cpu.Regs(X) := Cpu.Delay_Timer;
          when 16#0A# =>
-            for I in Keys loop
+            for I in Cpu.Keys'Range loop
                if Cpu.Keys(I) then
                   Cpu.Regs(X) := Byte(I);
                   Cpu.PC := Cpu.PC + 2;
@@ -261,11 +258,11 @@ package body Instruction is
             Cpu.Mem(Cpu.I + 1) := Cpu.Regs(X) / 10 mod 10;
             Cpu.Mem(Cpu.I + 2) := Cpu.Regs(X) mod 10;
          when 16#55# =>
-            for I in Regs loop
+            for I in Cpu.Regs'Range loop
                Cpu.Mem(Cpu.I + Word(I)) := Cpu.Regs(I);
             end loop;
          when 16#65# =>
-            for I in Regs loop
+            for I in Cpu.Regs'Range loop
                Cpu.Regs(I) := Cpu.Mem(Cpu.I + Word(I));
             end loop;
          when others =>
