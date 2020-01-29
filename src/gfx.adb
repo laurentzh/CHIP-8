@@ -24,11 +24,11 @@ package body Gfx is
 
    procedure Draw_Pixel(X : Integer; Y : Integer; Pixel : Boolean) is
       Color : constant Bitmap_Color := (if Pixel then White else Transparent);
-      Pt : constant Point := (X, Y);
+      Pt : constant Point := (X * 5, Y * 5);
+      Rct : constant Rect := (Pt, 5, 5);
    begin
       Display.Hidden_Buffer(1).Set_Source(Color);
-      Display.Hidden_Buffer(1).Set_Pixel(Pt);
-      --Display.Update_Layer(1, True);
+      Display.Hidden_Buffer(1).Fill_Rect(Rct);
    end Draw_Pixel;
    
    procedure Clear is

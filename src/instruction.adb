@@ -196,8 +196,8 @@ package body Instruction is
                declare
                   X_Reg : constant Integer := Integer(Cpu.Regs(X));
                   Y_Reg : constant Integer := Integer(Cpu.Regs(Y));
-                  Pos_X : constant Integer := (X_Reg + X_Line) mod Gfx.Screen_Width;
-                  Pos_Y : constant Integer := (Y_Reg + Y_Line) mod Gfx.Screen_Height;
+                  Pos_X : constant Integer := (X_Reg + X_Line) mod 64;
+                  Pos_Y : constant Integer := (Y_Reg + Y_Line) mod 32;
                   Tmp : constant Boolean := Cpu.Screen(Pos_Y, Pos_X);
                begin
                   if Tmp then
