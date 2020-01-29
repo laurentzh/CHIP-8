@@ -192,7 +192,7 @@ package body Instruction is
       for Y_Line in 0 .. Height - 1 loop
          Pixel := Cpu.Mem(Cpu.I + Word(Y_Line));
          for X_Line in 0 .. 7 loop
-            if (Pixel and Shift_Right(16#80#, Y_Line)) /= 0 then
+            if (Pixel and Shift_Right(16#80#, X_Line)) /= 0 then
                declare
                   X_Reg : constant Integer := Integer(Cpu.Regs(X));
                   Y_Reg : constant Integer := Integer(Cpu.Regs(Y));
