@@ -36,7 +36,7 @@ package body Gfx is
                Nibble := Shift_Right(Mem(Word(5 * Layout(Y, X) + I)), 4);
                for J in 0 .. 3 loop
                   if (Shift_Right(Nibble, 3 - J) and 1) = 1 then
-                     Draw_Key_Pixel(X * 40 + J, 160 + 40 * Y + I);
+                     Draw_Key_Pixel(X * 40 + J * 3 + 16, 160 + 40 * Y + I * 3 + 12);
                   end if;
                end loop;
             end loop;
@@ -46,9 +46,11 @@ package body Gfx is
    end Draw_Keyboard;
    
    procedure Draw_Key_Pixel(X : Integer; Y : Integer) is
+      Pt : constant Point := (X, Y);
+      Rct : constant Rect := (Pt, 3, 3);
    begin
       Display.Hidden_Buffer(1).Set_Source(White);
-      Display.Hidden_Buffer(1).Set_Pixel((X, Y));
+      Display.Hidden_Buffer(1).Fill_Rect(Rct);
    end Draw_Key_Pixel;
 
    procedure Draw_Pixel(X : Integer; Y : Integer; Pixel : Boolean) is
