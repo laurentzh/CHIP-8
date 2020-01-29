@@ -20,6 +20,14 @@ package body Instruction is
    begin
       I := Integer(Shift_Right(Op, 12));
       Instr_Handlers(I)(Cpu, Op);
+      
+      if Cpu.Delay_Timer /= 0 then
+         Cpu.Delay_Timer := Cpu.Delay_Timer - 1;
+      end if;
+      
+      if Cpu.Sound_Timer /= 0 then
+         Cpu.Sound_Timer := Cpu.Sound_Timer - 1;
+      end if;
    end Execute;
    
    procedure Handler_0 (Cpu : in out Chip8; Op : Opcode) is
