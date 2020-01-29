@@ -37,8 +37,8 @@ package body Instruction is
          when 16#00E0# =>
             -- clear the screen
             Cpu.Screen := (others => (others => False));
-            Gfx.Clear;
-            Display.Update_Layer(1, True);
+            Gfx.Clear_Layer(2);
+            Display.Update_Layer(2, True);
          when 16#00EE# =>
             Cpu.PC := Pop_Stack(Cpu.Stack);
          when others =>
@@ -218,7 +218,7 @@ package body Instruction is
          end loop;
       end loop;
       Cpu.PC := Cpu.PC + 2;
-      Display.Update_Layer(1, True);
+      Display.Update_Layer(2, True);
    end Handler_D;
    
    procedure Handler_E (Cpu : in out Chip8; Op : Opcode) is

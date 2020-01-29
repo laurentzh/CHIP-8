@@ -1,3 +1,5 @@
+with Last_Chance_Handler; pragma Unreferenced (Last_Chance_Handler);
+
 with Cpu; use Cpu;
 with Instruction; use Instruction;
 with Roms; use Roms;
@@ -17,6 +19,10 @@ procedure Main is
    Op : Opcode;
 begin
    Gfx.Initialize;
+   Gfx.Clear_Layer(1);
+   Gfx.Clear_Layer(2);
+
+   Gfx.Draw_Keyboard;
    Load_Rom(Global_Cpu, IBM);
    loop
       Op := Fetch(Global_Cpu);
