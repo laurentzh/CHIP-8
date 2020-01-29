@@ -20,7 +20,6 @@ package body Gfx is
       Display.Hidden_Buffer(1).Fill;
       -- Apply color
       LCD_Std_Out.Clear_Screen;
-      Display.Update_Layer(1, True);
    end;
 
    procedure Draw_Pixel(X : Integer; Y : Integer; Pixel : Boolean) is

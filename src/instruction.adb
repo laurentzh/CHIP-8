@@ -194,8 +194,10 @@ package body Instruction is
          for X_Line in 0 .. 7 loop
             if (Pixel and Shift_Right(16#80#, Y_Line)) /= 0 then
                declare
-                  Pos_X : constant Integer := (X + X_Line) mod Gfx.Screen_Width;
-                  Pos_Y : constant Integer := (Y + Y_Line) mod Gfx.Screen_Height;
+                  X_Reg : constant Integer := Integer(Cpu.Regs(X));
+                  Y_Reg : constant Integer := Integer(Cpu.Regs(Y));
+                  Pos_X : constant Integer := (X_Reg + X_Line) mod Gfx.Screen_Width;
+                  Pos_Y : constant Integer := (Y_Reg + Y_Line) mod Gfx.Screen_Height;
                   Tmp : constant Boolean := Cpu.Screen(Pos_Y, Pos_X);
                begin
                   if Tmp then
