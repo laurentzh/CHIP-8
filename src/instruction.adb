@@ -238,6 +238,7 @@ package body Instruction is
             -- error
             null;
       end case;
+      Cpu.Keys(I) := False;
       Cpu.PC := Cpu.PC + 2;
    end Handler_E;
    
@@ -251,6 +252,7 @@ package body Instruction is
             for I in Cpu.Keys'Range loop
                if Cpu.Keys(I) then
                   Cpu.Regs(X) := Byte(I);
+                  Cpu.Keys(I) := False;
                   Cpu.PC := Cpu.PC + 2;
                   return;
                end if;

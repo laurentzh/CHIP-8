@@ -2,8 +2,8 @@ with Types; use Types;
 
 package Inputs is
 
-   subtype Position_X is Integer range 0 .. 319;
-   subtype Position_Y is Integer range 160 .. 239;
+   subtype Position_X is Integer range 160 .. 239;
+   subtype Position_Y is Integer range 0 .. 319;
    
    type Layout_Array is array (0 .. 1, 0 .. 7) of Integer;
    Layout : constant Layout_Array := ((1, 2, 3, 16#C#, 7, 8, 9, 16#E#),

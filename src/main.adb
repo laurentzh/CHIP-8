@@ -1,4 +1,5 @@
 with Last_Chance_Handler; pragma Unreferenced (Last_Chance_Handler);
+with STM32.Board; use STM32.Board;
 
 with Cpu; use Cpu;
 with Instruction; use Instruction;
@@ -19,6 +20,7 @@ procedure Main is
    Op : Opcode;
 begin
    Gfx.Initialize;
+   Touch_Panel.Initialize;
    Gfx.Clear_Layer(1);
    Gfx.Clear_Layer(2);
 
@@ -27,6 +29,6 @@ begin
    loop
       Op := Fetch(Global_Cpu);
       Execute(Global_Cpu, Op);
-      --Update_Pressed_Keys(Global_Cpu.Keys);
+      Update_Pressed_Keys(Global_Cpu.Keys);
    end loop;
 end Main;
