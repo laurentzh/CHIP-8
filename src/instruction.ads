@@ -3,7 +3,9 @@ with Interfaces; use Interfaces;
 with Cpu; use Cpu;
 with Types; use Types;
 
-package Instruction is
+package Instruction with
+SPARK_Mode => On
+is
    
    subtype Opcode is Word;
    
