@@ -1,6 +1,6 @@
 with "Ada_Drivers_Library/boards/stm32f429_discovery/stm32f429_discovery_full.gpr";
 
-project Ada_Project extends "Ada_Drivers_Library/examples/shared/common/common.gpr" is
+project Chip8 extends "Ada_Drivers_Library/examples/shared/common/common.gpr" is
 
    type Mode_Type is ("release", "analyze", "debug");
    Mode : Mode_Type := External ("mode", "release");
@@ -19,4 +19,4 @@ project Ada_Project extends "Ada_Drivers_Library/examples/shared/common/common.g
 
    package Compiler renames STM32F429_Discovery_Full.Compiler;
 
-end Ada_Project;
+end Chip8;
