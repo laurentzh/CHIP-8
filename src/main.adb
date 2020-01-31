@@ -25,7 +25,7 @@ begin
    Gfx.Clear_Layer(2);
 
    Gfx.Draw_Keyboard(Global_Cpu.Mem);
-   Load_Rom(Global_Cpu, IBM);
+   Load_Rom(Global_Cpu, BLINKY);
    loop
       Op := Fetch(Global_Cpu);
       Execute(Global_Cpu, Op);

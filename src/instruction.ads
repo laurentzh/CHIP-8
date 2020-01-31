@@ -11,10 +11,7 @@ package Instruction is
      with Post => Fetch'Result = Shift_Left(Word(Cpu.Mem(Cpu.PC)), 8) +
      Word(Cpu.Mem(Cpu.PC + 1));
    
-   procedure Execute (Cpu : in out Chip8; Op : Opcode)
-     with Contract_Cases =>
-       (Cpu.Delay_Timer /= 0 => Cpu.Delay_Timer = Cpu.Delay_Timer'Old - 1,
-        Cpu.Sound_Timer /= 0 => Cpu.Sound_Timer = Cpu.Sound_Timer'Old - 1);
+   procedure Execute (Cpu : in out Chip8; Op : Opcode);
    
    procedure Handler_0 (Cpu : in out Chip8; Op : Opcode)
      with Pre => (Op and 16#F000#) = 16#0000#,
@@ -39,14 +36,17 @@ package Instruction is
      Post => Cpu.PC >= Cpu.PC'Old + 2,
      Contract_Cases =>
        (Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) = Byte(Op mod 16#100#)
-        => Cpu.PC = Cpu.PC'Old + 4);
+        => Cpu.PC = Cpu.PC'Old + 4,
+        Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) /= Byte(Op mod 16#100#)
+        => Cpu.PC = Cpu.PC'Old + 2);
    
    procedure Handler_4 (Cpu : in out Chip8; Op : Opcode)
      with Pre => (Op and 16#F000#) = 16#4000#,
-     Post => Cpu.PC >= Cpu.PC'Old + 2,
      Contract_Cases =>
        (Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) /= Byte(Op mod 16#100#)
-        => Cpu.PC = Cpu.PC'Old + 4);
+        => Cpu.PC = Cpu.PC'Old + 4,
+        Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) = Byte(Op mod 16#100#)
+        => Cpu.PC = Cpu.PC'Old + 2);
    
    procedure Handler_5 (Cpu : in out Chip8; Op : Opcode)
      with Pre => (Op and 16#F000#) = 16#5000#,
@@ -54,7 +54,10 @@ package Instruction is
      Contract_Cases =>
        (Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) =
           Cpu.Regs(Integer(Shift_Right(Op, 4) and 16#F#)) =>
-          Cpu.PC = Cpu.PC'Old + 4);
+          Cpu.PC = Cpu.PC'Old + 4,
+        Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) /=
+          Cpu.Regs(Integer(Shift_Right(Op, 4) and 16#F#)) =>
+          Cpu.PC = Cpu.PC'Old + 2);
    
    procedure Handler_6 (Cpu : in out Chip8; Op : Opcode)
      with Pre => (Op and 16#F000#) = 16#6000#,
@@ -80,7 +83,10 @@ package Instruction is
      Contract_Cases =>
        (Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) /=
           Cpu.Regs(Integer(Shift_Right(Op, 4) and 16#F#)) =>
-          Cpu.PC = Cpu.PC'Old + 4);
+          Cpu.PC = Cpu.PC'Old + 4,
+        Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) =
+          Cpu.Regs(Integer(Shift_Right(Op, 4) and 16#F#)) =>
+          Cpu.PC = Cpu.PC'Old + 2);
    
    procedure Handler_A (Cpu : in out Chip8; Op : Opcode)
      with Pre => (Op and 16#F000#) = 16#A000#,
@@ -102,14 +108,7 @@ package Instruction is
      with Pre => (Op and 16#F000#) = 16#E000#
      and then (Op mod 16#100# = 16#9E# or Op mod 16#100# = 16#A1#),
      Post => Cpu.PC >= Cpu.PC'Old + 2 and then
-     Cpu.Keys(Integer(Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)))) = False,
-     Contract_Cases =>
-       (Op mod 16#100# = 16#9E# and then
-          Cpu.Keys(Integer(Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#))))
-        => Cpu.PC = Cpu.PC'Old + 4,
-        Op mod 16#100# = 16#A1# and then
-          not Cpu.Keys(Integer(Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#))))
-        => Cpu.PC = Cpu.PC'Old + 4);
+     Cpu.Keys(Integer(Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)))) = False;
    
    procedure Handler_F (Cpu : in out Chip8; Op : Opcode)
      with Pre => (Op and 16#F000#) = 16#F000#
@@ -122,6 +121,7 @@ package Instruction is
      Contract_Cases =>
        (Op mod 16#100# = 16#07# =>
           Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) = Cpu.Delay_Timer,
+        Op mod 16#100# = 16#0A# => True,
         Op mod 16#100# = 16#15# => Cpu.Delay_Timer =
           Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)),
         Op mod 16#100# = 16#18# => Cpu.Sound_Timer =
@@ -136,14 +136,8 @@ package Instruction is
               Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) / 10 mod 10
         and then Cpu.Mem(Cpu.I + 2) =
               Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) mod 10,
-        Op mod 16#100# = 16#55# =>
-          (for all I in Cpu.Regs'First ..
-                 Integer(Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)))
-           => Cpu.Mem(Cpu.I + Word(I)) = Cpu.Regs(I)),
-        Op mod 16#100# = 16#65# => 
-          (for all I in Cpu.Regs'First ..
-                 Integer(Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)))
-           => Cpu.Regs(I) = Cpu.Mem(Cpu.I + Word(I))));
+        Op mod 16#100# = 16#55# => True,
+        Op mod 16#100# = 16#65# => True);
    
    type Instr_Handler is access procedure (Cpu : in out Chip8; Op : Opcode);
    type Instr_Handler_Array is array (0 .. 15) of Instr_Handler;
