@@ -72,7 +72,7 @@ package Instruction is
      (Op mod 16#10# = 0 or Op mod 16#10# = 1 or Op mod 16#10# = 2
       or Op mod 16#10# = 3 or Op mod 16#10# = 4 or Op mod 16#10# = 5
       or Op mod 16#10# = 6 or Op mod 16#10# = 7 or Op mod 16#10# = 16#E#),
-     Post => Cpu.PC = Cpu.PC + 2;
+     Post => Cpu.PC = Cpu.PC'Old + 2;
    
    procedure Handler_9 (Cpu : in out Chip8; Op : Opcode)
      with Pre => (Op and 16#F000#) = 16#9000#,
@@ -106,10 +106,10 @@ package Instruction is
      Contract_Cases =>
        (Op mod 16#100# = 16#9E# and then
           Cpu.Keys(Integer(Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#))))
-        => Cpu.PC = Cpu.PC + 4,
+        => Cpu.PC = Cpu.PC'Old + 4,
         Op mod 16#100# = 16#A1# and then
           not Cpu.Keys(Integer(Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#))))
-        => Cpu.PC = Cpu.PC + 4);
+        => Cpu.PC = Cpu.PC'Old + 4);
    
    procedure Handler_F (Cpu : in out Chip8; Op : Opcode)
      with Pre => (Op and 16#F000#) = 16#F000#
@@ -118,7 +118,7 @@ package Instruction is
                or Op mod 16#100# = 16#1E# or Op mod 16#100# = 16#29#
                or Op mod 16#100# = 16#33# or Op mod 16#100# = 16#55#
                or Op mod 16#100# = 16#65#),
-     Post => Cpu.PC = Cpu.PC + 2,
+     Post => Cpu.PC = Cpu.PC'Old + 2,
      Contract_Cases =>
        (Op mod 16#100# = 16#07# =>
           Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) = Cpu.Delay_Timer,
