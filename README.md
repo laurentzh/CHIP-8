@@ -30,10 +30,16 @@ python2 Ada_Drivers_Library/scripts/install_dependencies.py
 
 ```bash
 source env.sh        #if not already done
-gprbuild -P chip8.gpr
+gprbuild --target=arm-eabi -d -P chip8.gpr -XLCH=led -XRTS_Profile=ravenscar-sfp -XLOADER=ROM -XADL_BUILD_CHECKS=Disabled src/main.adb -largs -Wl,-Map=map.txt
 arm-eabi-objcopy -O binary objrelease/main objrelease/main.bin
 st-flash --reset write objrelease/main.bin 0x8000000
 ```
+
+## Videos
+
+<https://youtu.be/SudZGat54XU>
+
+<https://youtu.be/OLU-3eOG690>
 
 ## Authors
 
