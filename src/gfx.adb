@@ -28,22 +28,27 @@ package body Gfx is
    end Initialize;
    
    procedure Draw_Keyboard(Mem : Memory) is
-      Nibble : Byte;
    begin
       for Y in Layout_Array'Range(1) loop
          for X in Layout_Array'Range(2) loop
-            for I in 0 .. 4 loop
-               Nibble := Shift_Right(Mem(Word(5 * Layout(Y, X) + I)), 4);
-               for J in 0 .. 3 loop
-                  if (Shift_Right(Nibble, 3 - J) and 1) = 1 then
-                     Draw_Key_Pixel(X * 40 + J * 3 + 16, 160 + 40 * Y + I * 3 + 12);
-                  end if;
-               end loop;
-            end loop;
+            Draw_Key(Mem, X, Y);
          end loop;
       end loop;
       Display.Update_Layer(1, False);
    end Draw_Keyboard;
+   
+   procedure Draw_Key(Mem : Memory; X : Integer; Y : Integer) is
+      Nibble : Byte;
+   begin
+      for I in 0 .. 4 loop
+         Nibble := Shift_Right(Mem(Word(5 * Layout(Y, X) + I)), 4);
+         for J in 0 .. 3 loop
+            if (Shift_Right(Nibble, 3 - J) and 1) = 1 then
+               Draw_Key_Pixel(X * 40 + J * 3 + 16, 160 + 40 * Y + I * 3 + 12);
+            end if;
+         end loop;
+      end loop;
+   end Draw_Key;
    
    procedure Draw_Key_Pixel(X : Integer; Y : Integer) is
       Pt : constant Point := (X, Y);

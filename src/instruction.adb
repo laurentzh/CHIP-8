@@ -197,7 +197,7 @@ package body Instruction is
       Pixel : Byte;
    begin
       -- Reset VF
-      Cpu.Regs(15) := 0;
+      Cpu.Regs(16#F#) := 0;
       for Y_Line in 0 .. Height - 1 loop
          Pixel := Cpu.Mem(Cpu.I + Word(Y_Line));
          for X_Line in 0 .. 7 loop
@@ -210,7 +210,7 @@ package body Instruction is
                   Tmp : constant Boolean := Cpu.Screen(Pos_Y, Pos_X);
                begin
                   if Tmp then
-                     Cpu.Regs(15) := 1;
+                     Cpu.Regs(16#F#) := 1;
                   end if;
                   Cpu.Screen(Pos_Y, Pos_X) := Tmp xor True;
                   Gfx.Draw_Pixel(Pos_X, Pos_Y, Cpu.Screen(Pos_Y, Pos_X));
