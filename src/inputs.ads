@@ -10,6 +10,8 @@ package Inputs is
                                       (4, 5, 6, 16#D#, 16#A#, 0, 16#B#, 16#F#));
    
    procedure Update_Pressed_Keys(Keys : in out Keys_List);
-   function Get_Key(X : Position_X; Y : Position_Y) return Integer;
+   
+   function Get_Key(X : Position_X; Y : Position_Y) return Integer
+   with Post => Get_Key'Result = Layout((X - Position_X'First) / 40, Y / 40);
    
 end Inputs;

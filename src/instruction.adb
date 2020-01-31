@@ -1,8 +1,8 @@
 with Ada.Numerics.Discrete_Random;
-with Gfx;
-with Interfaces; use Interfaces;
-with Stack; use Stack;
 with STM32.Board; use STM32.Board;
+
+with Gfx;
+with Stack; use Stack;
 
 package body Instruction is
 
@@ -43,6 +43,7 @@ package body Instruction is
             Cpu.PC := Pop_Stack(Cpu.Stack);
          when others =>
             Cpu.PC := N;
+            return;
       end case;
       Cpu.PC := Cpu.PC + 2;
    end Handler_0;
@@ -147,7 +148,7 @@ package body Instruction is
             Cpu.Regs(16#F#) := Cpu.Regs(X) and 16#80#;
             Cpu.Regs(X) := Shift_Left(Cpu.Regs(X), 1);
          when others =>
-            -- error
+            -- checked by the contract
             null;
       end case;
       Cpu.PC := Cpu.PC + 2;
@@ -235,7 +236,7 @@ package body Instruction is
                Cpu.PC := Cpu.PC + 2;
             end if;
          when others =>
-            -- error
+            -- checked by the contract
             null;
       end case;
       Cpu.Keys(I) := False;
@@ -271,15 +272,15 @@ package body Instruction is
             Cpu.Mem(Cpu.I + 1) := Cpu.Regs(X) / 10 mod 10;
             Cpu.Mem(Cpu.I + 2) := Cpu.Regs(X) mod 10;
          when 16#55# =>
-            for I in Integer range Cpu.Regs'First .. X loop
+            for I in Cpu.Regs'First .. X loop
                Cpu.Mem(Cpu.I + Word(I)) := Cpu.Regs(I);
             end loop;
          when 16#65# =>
-            for I in Integer range Cpu.Regs'First .. X loop
+            for I in Cpu.Regs'First .. X loop
                Cpu.Regs(I) := Cpu.Mem(Cpu.I + Word(I));
             end loop;
          when others =>
-            -- error
+            -- check by the contract
             null;
       end case;
       Cpu.PC := Cpu.PC + 2;
