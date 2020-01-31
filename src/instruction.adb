@@ -274,10 +274,18 @@ package body Instruction is
          when 16#55# =>
             for I in Cpu.Regs'First .. X loop
                Cpu.Mem(Cpu.I + Word(I)) := Cpu.Regs(I);
+               pragma Loop_Invariant (I in Cpu.Regs'Range);
+               pragma Loop_Invariant (for all J in Cpu.Regs'First .. I =>
+                                        Cpu.Mem(Cpu.I + Word(J)) =
+                                        Cpu.Regs'Loop_Entry(J));
             end loop;
          when 16#65# =>
             for I in Cpu.Regs'First .. X loop
                Cpu.Regs(I) := Cpu.Mem(Cpu.I + Word(I));
+               pragma Loop_Invariant (I in Cpu.Regs'Range);
+               pragma Loop_Invariant (for all J in Cpu.Regs'First .. I =>
+                                        Cpu.Regs(J) =
+                                        Cpu.Mem'Loop_Entry(Cpu.I + Word(J)));
             end loop;
          when others =>
             -- check by the contract
