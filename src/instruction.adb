@@ -1,7 +1,7 @@
 with Ada.Numerics.Discrete_Random;
 with STM32.Board; use STM32.Board;
 
-with Gfx;
+with Gfx; use Gfx;
 with Stack; use Stack;
 
 package body Instruction is
@@ -37,7 +37,7 @@ package body Instruction is
          when 16#00E0# =>
             -- clear the screen
             Cpu.Screen := (others => (others => False));
-            Gfx.Clear_Layer(2);
+            Clear_Layer(2);
             Display.Update_Layer(2, True);
          when 16#00EE# =>
             Cpu.PC := Pop_Stack(Cpu.Stack);
@@ -213,7 +213,7 @@ package body Instruction is
                      Cpu.Regs(16#F#) := 1;
                   end if;
                   Cpu.Screen(Pos_Y, Pos_X) := Tmp xor True;
-                  Gfx.Draw_Pixel(Pos_X, Pos_Y, Cpu.Screen(Pos_Y, Pos_X));
+                  Draw_Pixel(Pos_X, Pos_Y, Cpu.Screen(Pos_Y, Pos_X));
                end;
             end if;
          end loop;

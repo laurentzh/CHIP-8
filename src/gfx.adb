@@ -8,7 +8,7 @@ with Interfaces; use Interfaces;
 
 package body Gfx is
    
-   procedure Initialize is
+   procedure Init_Draw is
    begin
       -- Initialize LCD
       Display.Initialize;
@@ -25,7 +25,7 @@ package body Gfx is
       
       -- Apply color
       LCD_Std_Out.Clear_Screen;
-   end Initialize;
+   end Init_Draw;
    
    procedure Draw_Keyboard(Mem : Memory) is
    begin

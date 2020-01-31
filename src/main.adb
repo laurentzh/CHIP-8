@@ -6,7 +6,7 @@ with Instruction; use Instruction;
 with Roms; use Roms;
 with Types; use Types;
 with Inputs; use Inputs;
-with Gfx;
+with Gfx; use Gfx;
 
 procedure Main is
 
@@ -19,12 +19,11 @@ procedure Main is
 
    Op : Opcode;
 begin
-   Gfx.Initialize;
+   Init_Draw;
    Touch_Panel.Initialize;
-   Gfx.Clear_Layer(1);
-   Gfx.Clear_Layer(2);
-
-   Gfx.Draw_Keyboard(Global_Cpu.Mem);
+   Clear_Layer(1);
+   Clear_Layer(2);
+   Draw_Keyboard(Global_Cpu.Mem);
    Load_Rom(Global_Cpu, BLINKY);
    loop
       Op := Fetch(Global_Cpu);
