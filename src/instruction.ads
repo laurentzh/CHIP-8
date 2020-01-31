@@ -119,7 +119,6 @@ is
                or Op mod 16#100# = 16#1E# or Op mod 16#100# = 16#29#
                or Op mod 16#100# = 16#33# or Op mod 16#100# = 16#55#
                or Op mod 16#100# = 16#65#),
-     Post => Cpu.PC = Cpu.PC'Old + 2,
      Contract_Cases =>
        (Op mod 16#100# = 16#07# =>
           Cpu.Regs(Integer(Shift_Right(Op, 8) and 16#F#)) = Cpu.Delay_Timer,
