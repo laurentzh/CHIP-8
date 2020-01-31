@@ -3,6 +3,10 @@
 This project was done for the EPITA Ada courses and the Make With Ada contest.
 <https://www.makewithada.org>
 
+CHIP-8 ROMS were found here:
+
+<https://github.com/JamesGriffin/CHIP-8-Emulator/tree/master/roms>
+
 ## Requirements
 
 * You need to have GNAT installed (host and target):
@@ -34,6 +38,12 @@ gprbuild --target=arm-eabi -d -P chip8.gpr -XLCH=led -XRTS_Profile=ravenscar-sfp
 arm-eabi-objcopy -O binary objrelease/main objrelease/main.bin
 st-flash --reset write objrelease/main.bin 0x8000000
 ```
+
+## Choose ROM
+
+We encountered a few memory problems with the implementation of the menu. So,
+in order to choose the ROM, you need to change the argument of the call to
+`Load_Rom` in the `main.adb` file.
 
 ## Videos
 
